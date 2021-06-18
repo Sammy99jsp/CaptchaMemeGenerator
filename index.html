@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CAPTCHA Meme Generator</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;900&display=swap');
+
+        .captcha {
+            width: 360px;
+            padding: 6px;
+            background-color: rgb(255, 255, 255);
+            border: 1px solid rgb(204, 204, 204);
+            box-shadow: rgb(0 0 0 / 20%) 2px 2px 3px;
+        }
+        .grid {
+            margin-top: 6px;
+            margin-bottom: 6px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr 1fr;
+            gap: 2px;
+        }
+
+        .header {
+            background-color: #518bc9;
+            color: white;
+            font-size: 16px;
+            padding: 24px;
+            font-family: "Roboto", sans-serifd;
+        }
+
+        .header strong {
+            font-size: 28px;
+            font-weight: 900;
+            display: block;
+        }
+
+        .grid img {
+            width: 100%;
+            height: 125px;
+            object-fit: cover;
+        }
+
+        .btn.group {
+            display: block;
+        }
+
+        .footer {
+            height: 50px;
+        }
+
+        .footer .btn.group button {
+            height: 48px;
+            width: 48px;
+            border: none;
+            background-size: 32px 32px;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.55;
+            padding: 0;
+            margin: 6px 0px 6px 6px;
+        }
+
+        .footer .left {
+            float: left;
+        }
+
+        .footer .right {
+            float: right;
+        }
+
+        button.reload {
+            background: url('https://www.gstatic.com/recaptcha/api2/refresh_2x.png');
+        }
+
+        button.audio {
+            background:url('https://www.gstatic.com/recaptcha/api2/audio_2x.png');
+        }
+
+        button.help {
+            background: url('https://www.gstatic.com/recaptcha/api2/info_2x.png');
+        }
+
+        button.action {
+            background-color: #4a90e2;
+            font-family: "Roboto", sans-serif;
+            border: none;
+            border-radius: 2px;
+            padding: 0 10px 0 10px;
+            text-transform: uppercase;
+            font-size: 14px;
+            font-weight: 500;
+            color: white;
+            line-height: 42px;
+            min-width: 100px;
+            margin: 6px 6px 6px 0px;
+            font-weight: 500;
+        }
+
+        .divider {
+            border-top: 1px solid #dfdfdf;
+            margin-bottom: 1px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Captcha Meme Generator</h2>
+    <p>Hello, Internet Stranger! Just simply drag and drop the pictures you wish to use on the grid.</p>
+    <p>Feel free to also change the text too by tping in the box -- That's also editable!</p>
+    <div class="captcha box">
+        <div class="header" contenteditable="true">
+            Select all images with
+            <strong contenteditable="true">[Funny Text Here]</strong>
+        </div>
+        <div class="grid">
+            <img src="https://via.placeholder.com/250x250" alt="" ondrop="dropHandler(event);" ondragover="dragOverHandler(event, this);">
+            <img src="https://via.placeholder.com/250x250" alt="" ondrop="dropHandler(event);" ondragover="dragOverHandler(event, this);">
+            <img src="https://via.placeholder.com/250x250" alt="" ondrop="dropHandler(event);" ondragover="dragOverHandler(event, this);">
+            <img src="https://via.placeholder.com/250x250" alt="" ondrop="dropHandler(event);" ondragover="dragOverHandler(event, this);">
+            <img src="https://via.placeholder.com/250x250" alt="" ondrop="dropHandler(event);" ondragover="dragOverHandler(event, this);">
+            <img src="https://via.placeholder.com/250x250" alt="" ondrop="dropHandler(event);" ondragover="dragOverHandler(event, this);">
+            <img src="https://via.placeholder.com/250x250" alt="" ondrop="dropHandler(event);" ondragover="dragOverHandler(event, this);">
+            <img src="https://via.placeholder.com/250x250" alt="" ondrop="dropHandler(event);" ondragover="dragOverHandler(event, this);">
+            <img src="https://via.placeholder.com/250x250" alt="" ondrop="dropHandler(event);" ondragover="dragOverHandler(event, this);">
+            </div>
+        <div class="divider"></div>
+        <div class="footer">
+            <div class="btn group left">
+                <button class="reload"></button>
+                <button class="audio"></button>
+                <button class="help"></button>
+            </div>
+
+            <button class="action right">skip</button>
+        </div>
+    </div>
+    <script>
+        let target;
+        function dropHandler(e) {
+            let target = e.path[0];
+            e.preventDefault();
+
+            if (e.dataTransfer.items) {
+                let it = e.dataTransfer.items[0];
+                if(it.kind !== "file") {
+                    return;
+                }
+
+                let f = it.getAsFile();
+                f.arrayBuffer().then((arrayBuffer) => {
+                    let blob = new Blob([new Uint8Array(arrayBuffer)], {type: f.type});
+                    let blobUrl = URL.createObjectURL(blob);
+                    target.src = blobUrl;
+                })
+            }
+        }
+
+        function dragOverHandler(e) {
+            e.preventDefault();
+            target = e.targetElement;
+        }
+    </script>
+</body>
+</html>
